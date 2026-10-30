@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7e9e8">
+  <title>Язык любви</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--rose:#c87982;--rose-dark:#9e5664;--ink:#493b3d;--muted:#887779;--cream:#fffaf6;--pink:#f6e5e5;--line:#f0d9d9;--white:#fff}
+    *{box-sizing:border-box} body{margin:0;min-height:100vh;background:radial-gradient(circle at 10% 10%,#fff 0,transparent 32%),linear-gradient(145deg,#f8e9e8,#fdf6ef 55%,#f4e3e4);color:var(--ink);font-family:Manrope,Arial,sans-serif}
+    button{font:inherit;cursor:pointer} .shell{width:min(100% - 32px,760px);margin:0 auto;padding:28px 0 48px}
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:34px}.brand{font-weight:800;letter-spacing:.02em;color:var(--rose-dark)}.brand span{font-size:20px;margin-right:8px}
+    .tag{font-size:12px;color:var(--muted);border:1px solid #e9cccc;border-radius:99px;padding:8px 12px;background:#ffffff80}
+    .card{background:#fffdfbdf;border:1px solid #fff;border-radius:28px;padding:clamp(24px,5vw,48px);box-shadow:0 18px 60px #9e566414;backdrop-filter:blur(8px)}
+    .eyebrow{text-transform:uppercase;letter-spacing:.16em;font-size:11px;font-weight:800;color:var(--rose);margin:0 0 14px}
+    h1,h2{font-family:"Playfair Display",Georgia,serif;font-weight:600;line-height:1.12;margin:0 0 16px}h1{font-size:clamp(38px,7vw,62px)}h2{font-size:clamp(29px,5vw,42px)}
+    p{line-height:1.7;color:var(--muted);margin:0 0 20px}.heart{color:var(--rose)}.intro{max-width:560px;font-size:16px}
+    .btn{border:0;border-radius:16px;padding:15px 22px;background:var(--rose);color:white;font-weight:800;box-shadow:0 8px 20px #c8798233;transition:.2s}.btn:hover{transform:translateY(-2px);background:var(--rose-dark)}.btn.secondary{background:#f8e9e8;color:var(--rose-dark);box-shadow:none}.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+    .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.fine{font-size:12px;margin-top:20px}.ornament{font-size:30px;color:#d69aa0;letter-spacing:10px;margin:28px 0 8px}
+    .progress-wrap{height:6px;background:#f3e3e2;border-radius:99px;overflow:hidden;margin:18px 0 28px}.progress{height:100%;background:var(--rose);width:0;transition:width .25s}
+    .qmeta{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;font-weight:700}
+    .answers{display:grid;gap:12px;margin-top:26px}.answer{width:100%;text-align:left;border:1px solid var(--line);background:#fff;border-radius:16px;padding:17px 18px;color:var(--ink);line-height:1.5;transition:.18s}.answer:hover,.answer.selected{border-color:var(--rose);background:#fff5f4;box-shadow:0 5px 18px #c8798214}
+    .answer .letter{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#f8e9e8;color:var(--rose-dark);font-weight:800;margin-right:10px;font-size:12px}
+    .result-grid{display:grid;gap:12px;margin:26px 0}.score-row{display:grid;grid-template-columns:145px 1fr 42px;gap:12px;align-items:center;font-size:13px;font-weight:700}.bar{height:9px;background:#f3e5e4;border-radius:20px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,#d99aa0,#b96877);border-radius:20px}
+    .result-note{padding:18px;border-radius:18px;background:#fff4f2;margin:18px 0}.result-note strong{display:block;margin-bottom:6px;color:var(--rose-dark)}
+    .pairbox{border:1px dashed #d9a9ad;border-radius:18px;padding:20px;margin-top:22px;background:#fff9f7}.pairbox input{width:100%;padding:14px;border:1px solid var(--line);border-radius:12px;font:inherit;margin:10px 0 12px;color:var(--ink)}
+    footer{text-align:center;color:#a68e90;font-size:11px;margin-top:22px}
+    @media(max-width:520px){header{margin-bottom:20px}.tag{font-size:10px}.score-row{grid-template-columns:112px 1fr 36px;font-size:11px}.card{border-radius:23px}}
+  </style>
+</head>
+<body>
+<div class="shell">
+  <header><div class="brand"><span>♡</span> ЯЗЫК ЛЮБВИ</div><div class="tag">пространство для двоих</div></header>
+  <main id="app"></main>
+  <footer>Тест для самопознания и разговора друг с другом · Не психологическая диагностика</footer>
+</div>
+<script>
+const categories = {
+  words:{name:"Слова поддержки",desc:"Тебе особенно важно слышать искренние слова: признание, благодарность, поддержку и нежность."},
+  time:{name:"Качественное время",desc:"Для тебя любовь ощущается через внимание, совместные моменты и разговоры без отвлечений."},
+  gifts:{name:"Знаки внимания",desc:"Тебе дороги подарки и маленькие символы: не цена, а мысль и забота, которые за ними стоят."},
+  care:{name:"Забота и поступки",desc:"Ты чувствуешь любовь, когда человек помогает, поддерживает делом и замечает, что может облегчить твой день."},
+  touch:{name:"Прикосновения",desc:"Объятия, поцелуи и нежные прикосновения помогают тебе ощущать близость и связь."}
+};
+const questions = [
+ {q:"После непростого дня что помогло бы тебе почувствовать любовь?",a:[["words","Услышать тёплые слова и поддержку."],["time","Побыть рядом и спокойно поговорить."],["care","Чтобы близкий человек взял часть забот на себя."],["touch","Получить крепкие объятия."]]},
+ {q:"Какой знак внимания тронул бы тебя сильнее?",a:[["gifts","Небольшой подарок, выбранный специально для меня."],["words","Искреннее сообщение о том, как я дорог(а)."],["time","Вечер, который человек специально посвятил нам."],["care","Поступок, который сделал мой день легче."]]},
+ {q:"Когда ты особенно чувствуешь близость с партнёром?",a:[["time","Когда мы увлечённо разговариваем и никуда не спешим."],["touch","Когда мы обнимаемся или держимся за руки."],["words","Когда он/она говорит о своих чувствах."],["gifts","Когда получаетcя обменяться памятными мелочами."]]},
+ {q:"Что для тебя важнее в обычный будний день?",a:[["care","Практическая помощь без просьб."],["time","Совместный ужин и внимание друг к другу."],["touch","Поцелуй или объятие при встрече."],["words","Добрые слова и благодарность."]]},
+ {q:"Какой сюрприз вызвал бы у тебя самую тёплую улыбку?",a:[["gifts","Маленькая вещь, о которой я давно упоминал(а)."],["time","Неожиданное свидание или прогулка вдвоём."],["care","Человек решил за меня одну утомительную задачу."],["touch","Нежная встреча с долгими объятиями."]]},
+ {q:"Если вы долго не виделись, чего тебе будет не хватать больше всего?",a:[["touch","Физической близости и прикосновений."],["time","Наших разговоров и привычного времени вместе."],["words","Тёплых слов и сообщений о чувствах."],["gifts","Маленьких знаков, напоминающих друг о друге."]]},
+ {q:"Как партнёр лучше всего может показать, что ценит тебя?",a:[["words","Сказать это прямо и конкретно."],["care","Подтвердить это своими поступками."],["time","Выделить время только для нас."],["touch","Быть нежным и тактильным."]]},
+ {q:"Что ты скорее сохранишь на память?",a:[["gifts","Вещь или записку, подаренную близким человеком."],["words","Письмо или сообщение с важными словами."],["time","Воспоминание о проведённом вместе дне."],["touch","Ощущение особенного объятия или близости."]]},
+ {q:"Партнёр заметил, что ты устал(а). Какой жест будет самым приятным?",a:[["care","Он/она сам(а) приготовит ужин или поможет с делами."],["touch","Обнимет и даст почувствовать, что я не один/одна."],["words","Скажет, что видит мои старания и гордится мной."],["time","Отложит телефон и побудет рядом."]]},
+ {q:"Какой совместный момент кажется тебе идеальным?",a:[["time","Долгий разговор, прогулка или уютный вечер."],["gifts","Обмен небольшими сюрпризами и памятными вещами."],["touch","Уютно лежать рядом, обниматься, держаться за руки."],["care","Вместе заниматься делом и заботиться друг о друге."]]},
+ {q:"Что тебе хотелось бы чаще получать от партнёра?",a:[["words","Комплименты, признания и слова благодарности."],["touch","Спонтанные объятия, поцелуи и прикосновения."],["care","Помощь и инициативу в бытовых вопросах."],["time","Полное внимание и время без телефонов."]]},
+ {q:"Что делает подарок по-настоящему ценным для тебя?",a:[["gifts","То, что человек запомнил мои слова и выбрал с душой."],["words","Тёплые слова, которыми сопровождается подарок."],["time","Воспоминание о моменте, когда мы были вместе."],["care","То, что подарок решает мою потребность или задачу."]]},
+ {q:"Во время разногласия что помогает тебе снова почувствовать связь?",a:[["words","Спокойные слова, признание чувств и поддержка."],["time","Возможность поговорить наедине без спешки."],["touch","Примирительное объятие, если обоим это комфортно."],["care","Конкретные шаги, показывающие желание всё исправить."]]},
+ {q:"Как ты чаще всего сам(а) показываешь любовь?",a:[["care","Помогаю, забочусь и стараюсь облегчить жизнь."],["words","Говорю приятные вещи и поддерживаю."],["gifts","Дарю небольшие подарки и сюрпризы."],["time","Ищу возможность провести время вместе."]]},
+ {q:"Что для тебя означает «он/она обо мне подумал(а)»?",a:[["gifts","Принёс(ла) что-то маленькое, потому что вспомнил(а) обо мне."],["care","Заранее позаботился(лась) о том, что мне понадобится."],["words","Написал(а), чтобы поддержать или порадовать."],["time","Освободил(а) время, чтобы побыть со мной."]]},
+ {q:"Какое проявление нежности тебе ближе?",a:[["touch","Взять за руку, обнять, поцеловать."],["words","Назвать ласково и сказать, как сильно любят."],["time","Посидеть рядом, уделяя друг другу всё внимание."],["gifts","Оставить милую записку или небольшой сюрприз."]]},
+ {q:"Что сильнее всего расстраивает в отношениях?",a:[["time","Когда мы почти не проводим время вместе."],["words","Когда чувства и старания остаются без словесного признания."],["care","Когда обещания не подкрепляются поступками."],["touch","Когда между нами мало нежности и прикосновений."]]},
+ {q:"Какой способ отметить важную для тебя дату приятнее?",a:[["time","Провести день вместе, придумав что-то особенное."],["gifts","Получить памятный подарок."],["care","Почувствовать, что обо всём позаботились."],["words","Услышать искренние слова о том, что я значу."]]},
+ {q:"Когда ты сомневаешься в себе, что особенно поддерживает?",a:[["words","Когда близкий человек напоминает о моих сильных сторонах."],["care","Когда он/она помогает мне справиться с трудностью."],["touch","Когда меня обнимают и остаются рядом."],["time","Когда меня внимательно слушают столько, сколько нужно."]]},
+ {q:"Представь идеальный обычный вечер вдвоём. Что в нём главное?",a:[["time","Мы вместе, разговариваем и наслаждаемся моментом."],["touch","Много нежности, объятий и телесной близости."],["care","Мы заботимся друг о друге и делим дела."],["words","Говорим о чувствах и говорим друг другу приятное."]]}
+];
+let current=0, answers=[], selected=null;
+const app=document.getElementById('app');
+function home(){app.innerHTML=`<section class="card"><p class="eyebrow">маленькое путешествие навстречу друг другу</p><h1>Язык <span class="heart">любви</span></h1><p class="intro">У каждого свой способ чувствовать и выражать любовь. Ответь на 20 вопросов, чтобы лучше понять, что наполняет тебя теплом и близостью.</p><div class="ornament">♡　♡　♡</div><div class="actions"><button class="btn" id="start">Начать тест</button></div><p class="fine">Здесь нет правильных ответов. Выбирай то, что действительно ближе именно тебе.</p></section>`;document.getElementById('start').onclick=()=>{current=0;answers=[];question()}}
+function question(){selected=null;let q=questions[current];app.innerHTML=`<section class="card"><div class="qmeta"><span>ТВОЙ ТЕСТ</span><span>${current+1} ИЗ ${questions.length}</span></div><div class="progress-wrap"><div class="progress" style="width:${(current/questions.length)*100}%"></div></div><p class="eyebrow">вопрос ${current+1}</p><h2>${q.q}</h2><div class="answers">${q.a.map((a,i)=>`<button class="answer" data-i="${i}"><span class="letter">${String.fromCharCode(65+i)}</span>${a[1]}</button>`).join('')}</div><div class="actions"><button class="btn secondary" id="back" ${current===0?'disabled':''}>Назад</button><button class="btn" id="next" disabled>${current===questions.length-1?'Узнать результат':'Далее'}</button></div></section>`;document.querySelectorAll('.answer').forEach(b=>b.onclick=()=>{document.querySelectorAll('.answer').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');selected=Number(b.dataset.i);document.getElementById('next').disabled=false});document.getElementById('back').onclick=()=>{if(current>0){current--;question()}};document.getElementById('next').onclick=()=>{if(selected===null)return;answers[current]=q.a[selected][0];if(current<questions.length-1){current++;question()}else result()}}
+function result(){let counts={words:0,time:0,gifts:0,care:0,touch:0};answers.forEach(x=>counts[x]++);let total=answers.length;let sorted=Object.keys(counts).sort((a,b)=>counts[b]-counts[a]);let top=sorted[0];let labels=sorted.map(k=>`<div class="score-row"><span>${categories[k].name}</span><div class="bar"><div class="fill" style="width:${counts[k]/total*100}%"></div></div><span>${Math.round(counts[k]/total*100)}%</span></div>`).join('');let data={counts,answers,top,completedAt:new Date().toISOString()};localStorage.setItem('loveLanguageResult',JSON.stringify(data));app.innerHTML=`<section class="card"><p class="eyebrow">твой результат</p><h2>Твой язык любви — <span class="heart">${categories[top].name.toLowerCase()}</span></h2><p>${categories[top].desc}</p><div class="result-note"><strong>Что это может значить</strong>Это направление набрало у тебя больше всего баллов. Посмотри и на остальные результаты: любовь редко укладывается только в один способ.</div><h3 style="font-size:14px;margin:24px 0 14px">ТВОЙ ПРОФИЛЬ</h3><div class="result-grid">${labels}</div><p class="fine">Результат отражает твои ответы в этом тесте, а не является диагнозом или неизменной характеристикой.</p><div class="actions"><button class="btn" id="share">Поделиться результатом</button><button class="btn secondary" id="again">Пройти заново</button></div><div class="pairbox"><strong>♡ Проверим совместимость?</strong><p class="fine">Пока это демонстрационный экран. На следующем этапе подключим общий код пары и безопасное хранение результатов, чтобы вы могли сравнить ответы с разных телефонов.</p></div></section>`;document.getElementById('again').onclick=home;document.getElementById('share').onclick=()=>{let text=`Мой язык любви — ${categories[top].name}. Тест «Язык любви»`;if(navigator.share)navigator.share({title:'Язык любви',text});else navigator.clipboard?.writeText(text).then(()=>alert('Текст результата скопирован'))}}
+home();
+</script>
+</body>
+</html>
